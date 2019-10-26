@@ -1,0 +1,16 @@
+{
+  "parameters": {
+    "api-version": "2018-08-31"
+  },
+  "responses": {
+    "200": {
+      "body": {
+        "id": "guid",
+        "subscriptionName": "subscription name",
+        "offerId": "offer1",
+        "planId": "plan1",
+        "quantity": "100"
+      }
+    }
+  }
+}
