@@ -46,16 +46,28 @@
         },
         "parameters": [
           {
+            "name": "x-ms-requestid",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
+            "name": "x-ms-correlationid",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
+            "name": "x-ms-marketplace-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "The token query parameter in the URL when the user is redirected to the SaaS partner’s website from Azure (for example: https://contoso.com/signup?token=..). Note: The URL decodes the token value from the browser before using it."
+          },
+          {
             "$ref": "#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "#/parameters/MarketplaceTokenParameter"
-          },
-          {
-            "$ref": "#/parameters/RequestId"
-          },
-          {
-            "$ref": "#/parameters/CorrelationId"
           }
         ],
         "responses": {
