@@ -35,7 +35,7 @@
     }
   },
   "paths": {
-    "/resolve?api-version={api-version}": {
+    "/resolve": {
       "post": {
         "operationId": "MarketplaceFulfillment_Resolve",
         "description": "Resolve marketplace subscription.",
@@ -73,6 +73,48 @@
           }
         }
       }
+    },
+    "/": {
+      "get": {
+        "operationId": "MarketplaceFulfillment_GetSubscription",
+        "description": "Get a specific subscription.",
+        "x-ms-examples": {
+          "ResolveSubscription": {
+            "$ref": "./examples/GetSubscription.json"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "#/parameters/SubscriptionIDParameter"
+          },
+          {
+            "$ref": "#/parameters/AuthorizationParameter"
+          },
+          {
+            "$ref": "#/parameters/RequestId"
+          },
+          {
+            "$ref": "#/parameters/CorrelationId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK. The request was successfully processed and the terms were accepted.",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "default": {
+            "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
     }
   },
   "parameters": {
@@ -82,6 +124,20 @@
       "required": true,
       "type": "string",
       "description": "The API version to use for the request."
+    },
+    "SubscriptionIDParameter": {
+      "name": "subscriptionId",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The subscription id to use for the request."
+    },
+    "AuthorizationParameter": {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "type": "string",
+      "description": "JWT bearer token"
     },
     "MarketplaceTokenParameter": {
       "name": "x-ms-marketplace-token",
