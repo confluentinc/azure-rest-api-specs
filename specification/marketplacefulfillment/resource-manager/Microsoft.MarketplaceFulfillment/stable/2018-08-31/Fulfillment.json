@@ -67,6 +67,13 @@
             "description": "The token query parameter in the URL when the user is redirected to the SaaS partner’s website from Azure (for example: https://contoso.com/signup?token=..). Note: The URL decodes the token value from the browser before using it."
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "JWT bearer token"
+          },
+          {
             "$ref": "#/parameters/ApiVersionParameter"
           }
         ],
@@ -400,9 +407,41 @@
           "type": "string",
           "format": "integer",
           "description": "Quantity."
+        },
+        "beneficiary": {
+          "type": "object",
+          "$ref": "#/definitions/Tenant",
+          "description": "Tenant for which SaaS subscription is purchased."
+        },
+        "purchaser": {
+          "type": "object",
+          "$ref": "#/definitions/Tenant",
+          "description": "Tenant that purchased the SaaS subscription."
         }
       },
       "description": "Subscription definition"
+    },
+    "Tenant": {
+      "type": "object",
+      "description": "The properties of a tenant.",
+      "properties": {
+        "emailId": {
+          "type": "string",
+          "description": "The email of the tenant."
+        },
+        "objectId": {
+          "type": "string",
+          "description": "The object id of the tenant."
+        },
+        "tenantId": {
+          "type": "string",
+          "description": "The tenant id of the tenant."
+        },
+        "puid": {
+          "type": "string",
+          "description": "The puid of the tenant."
+        }
+      }
     },
     "Operation": {
       "properties": {
