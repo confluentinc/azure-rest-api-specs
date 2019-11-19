@@ -28,48 +28,112 @@
       "type": "oauth2",
       "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
       "flow": "implicit",
-      "description": "Azure Active Directory OAuth2 Flow.",
+      "description": "Azure Active Directory OAuth2 Flow",
       "scopes": {
         "user_impersonation": "impersonate your user account"
       }
     }
   },
   "paths": {
-    "/usageEvent?api-version={api-version}": {
+    "/usageEvent": {
       "post": {
-        "operationId": "MarketplaceMeteredBilling_UsageEvent",
         "description": "Report single usage event.",
-        "x-ms-examples": {
-          "UsageEvent": {
-            "$ref": "./examples/UsageEvent.json"
-          }
-        },
+        "operationId": "MarketplaceMeteredBilling_UsageEvent",
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
           },
           {
-            "$ref": "#/parameters/AuthorizationTokenParameter"
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token for authorization."
           },
           {
-            "$ref": "#/parameters/RequestId"
+            "name": "x-ms-requestid",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
           },
           {
-            "$ref": "#/parameters/CorrelationId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK. The request was successfully processed and the terms were accepted.",
+            "name": "x-ms-correlationid",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "required": true,
             "schema": {
               "$ref": "#/definitions/UsageEvent"
-            }
+            },
+            "description": "Parameters supplied to report a single usage event."
+          }
+        ],
+        "x-ms-examples": {
+          "UsageEvent": {
+            "$ref": "./examples/UsageEvent.json"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "default": {
-            "description": "Microsoft.MarketplaceMeteredBilling error response describing why the operation failed.",
+          "400": {
+            "description": "Bad request, missing or invalid data provided or expired"
+          },
+          "403": {
+            "description": "Bad request, missing or invalid data provided or expired"
+          },
+          "409": {
+            "description": "Conflict, when we receive the usage call for the usage resource ID, and effective usage, which already exists. The response will contain additionalInfo field that contains info about the accepted message."
+        }
+        }
+      }
+    },
+    "/batchUsageEvent": {
+      "post": {
+        "description": "Report batch usage events.",
+        "operationId": "MarketplaceMeteredBilling_BatchUsageEvent",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token for authorization."
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
+              "$ref": "#/definitions/BatchUsageEvent"
+            },
+            "description": "Parameters supplied to report batch usage events."
+          }
+        ],
+        "x-ms-examples": {
+          "UsageEvent": {
+            "$ref": "./examples/BatchUsageEvent.json"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request, missing or invalid data provided or expired"
+          },
+          "403": {
+            "description": "Bad request, missing or invalid data provided or expired"
           }
         }
       }
@@ -82,38 +146,10 @@
       "required": true,
       "type": "string",
       "description": "The API version to use for the request."
-    },
-    "AuthorizationTokenParameter": {
-      "name": "authorization",
-      "in": "header",
-      "required": true,
-      "type": "string",
-      "description": "The token query parameter in the URL when the user is redirected to the SaaS partner’s website from Azure (for example: https://contoso.com/signup?token=..). Note: The URL decodes the token value from the browser before using it."
-    },
-    "RequestId": {
-      "name": "x-ms-requestid",
-      "in": "header",
-      "required": false,
-      "type": "string",
-      "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
-    },
-    "CorrelationId": {
-      "name": "x-ms-correlationid",
-      "in": "header",
-      "required": false,
-      "type": "string",
-      "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
     }
   },
   "definitions": {
     "UsageEvent": {
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/UsageEventProperties",
-          "description": "Represents the properties of the resource.",
-          "x-ms-client-flatten": true
-        }
-      },
       "allOf": [
         {
           "$ref": "#/definitions/UsageEventProperties"
@@ -146,26 +182,25 @@
       },
       "description": "UsageEvent definition"
     },
-    "ErrorResponse": {
-      "description": "Error response indicates Microsoft.MarketplaceMeteredBilling service is not able to process the incoming request. The reason is provided in the error message.",
-      "type": "object",
+
+    "BatchUsageEvent": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BatchUsageEventProperties"
+        }
+      ],
+      "description": "The batchUsageEvent endpoint allows you to emit usage events for a specific purchased entity"
+    },
+    "BatchUsageEventProperties": {
       "properties": {
-        "error": {
-          "description": "The details of the error.",
-          "properties": {
-            "code": {
-              "description": "Error code.",
-              "type": "string",
-              "readOnly": true
-            },
-            "message": {
-              "description": "Error message indicating why the operation failed.",
-              "type": "string",
-              "readOnly": true
-            }
+        "request": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UsageEventProperties"
           }
         }
-      }
+      },
+      "description": "BatchUsageEvent definition"
     }
   }
 }
