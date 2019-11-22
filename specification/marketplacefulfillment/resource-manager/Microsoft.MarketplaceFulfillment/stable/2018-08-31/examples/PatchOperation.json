@@ -1,0 +1,24 @@
+{
+    "parameters": {
+        "api-version": "2018-09-15",
+        "subscriptionId": "37f9dea2-4345-438f-b0bd-03d40d28c7e0",
+        "operationId": "ea0b5d24-112b-4fc0-a6fc-44f3b8119458",
+        "patchPayload": {
+            "planId": "Premium",
+            "quantity": "500"
+        }
+    },
+    "responses": {
+        "200": {
+            "body": {}
+        },
+        "500": {
+            "body": {
+                "error": {
+                    "code": "UnexpectedError",
+                    "message": "An unexpected error has occurred."
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "parameters": {
+        "api-version": "2018-09-15",
+        "subscriptionId": "37f9dea2-4345-438f-b0bd-03d40d28c7e0",
+        "activatePayload": {
+            "planId": "gold"
+        }
+    },
+    "responses": {
+        "200": {
+            "body": {}
+        },
+        "500": {
+            "body": {
+                "error": {
+                    "code": "UnexpectedError",
+                    "message": "An unexpected error has occurred."
+                }
+            }
+        }
+    }
+}

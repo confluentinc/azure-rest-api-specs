@@ -1,0 +1,43 @@
+{
+    "parameters": {
+        "api-version": "2018-09-15",
+        "subscriptionId": "37f9dea2-4345-438f-b0bd-03d40d28c7e0"
+    },
+    "responses": {
+        "200": {
+            "body": {
+                "id": "",
+                "name": "Contoso Cloud Solution",
+                "publisherId": "contoso",
+                "offerId": "offer1",
+                "planId": "silver",
+                "quantity": "10",
+                "beneficiary": {
+                    "tenantId": "<guid>"
+                },
+                "purchaser": {
+                    "tenantId": "<guid>"
+                },
+                "allowedCustomerOperations": [
+                    "Read"
+                ],
+                "sessionMode": "None",
+                "isFreeTrial": "true",
+                "status": "Subscribed",
+                "term": {
+                    "startDate": "2019-05-31",
+                    "endDate": "2019-06-29",
+                    "termUnit": "P1M"
+                }
+            }
+        },
+        "500": {
+            "body": {
+                "error": {
+                    "code": "UnexpectedError",
+                    "message": "An unexpected error has occurred."
+                }
+            }
+        }
+    }
+}

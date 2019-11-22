@@ -1,0 +1,33 @@
+{
+    "parameters": {
+        "api-version": "2018-09-15",
+        "subscriptionId": "37f9dea2-4345-438f-b0bd-03d40d28c7e0",
+        "operationId": "ea0b5d24-112b-4fc0-a6fc-44f3b8119458"
+    },
+    "responses": {
+        "200": {
+            "body": {
+                "id": "ea0b5d24-112b-4fc0-a6fc-44f3b8119458",
+                "activityId": "7dcabbbe-9dd0-4e14-9e63-046864165a4e",
+                "publisherId": "Fabrikam",
+                "offerId": "FabrikamESign",
+                "planId": "Premium",
+                "quantity": 500,
+                "operationRequestSource": "None",
+                "subscriptionId": "0aa95e32-8be7-4e5e-94f9-563f6d7d9dcd",
+                "timeStamp": "2019-10-24T17:55:29.924421Z",
+                "action": "ChangePlan",
+                "status": "InProgress",
+                "resourceLocation": "https://marketplaceapi.microsoft.com/api/saas/subscriptions/0aa95e32-8be7-4e5e-94f9-563f6d7d9dcd/?api-version=2017-04-15"
+            }
+        },
+        "500": {
+            "body": {
+                "error": {
+                    "code": "UnexpectedError",
+                    "message": "An unexpected error has occurred."
+                }
+            }
+        }
+    }
+}
