@@ -69,7 +69,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/UsageEvent"
+              "$ref": "#/definitions/UsageEventRequest"
             },
             "description": "Parameters supplied to report a single usage event."
           }
@@ -81,16 +81,28 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UsageEventResponse"
+            }
           },
           "400": {
-            "description": "Bad request, missing or invalid data provided or expired"
+            "description": "Bad request, missing or invalid data provided or expired",
+            "schema": {
+              "$ref": "#/definitions/BasicErrorProperties"
+            }
           },
           "403": {
-            "description": "Bad request, missing or invalid data provided or expired"
+            "description": "Bad request, missing or invalid data provided or expired",
+            "schema": {
+              "$ref": "#/definitions/BasicErrorProperties"
+            }
           },
           "409": {
-            "description": "Conflict, when we receive the usage call for the usage resource ID, and effective usage, which already exists. The response will contain additionalInfo field that contains info about the accepted message."
+            "description": "Conflict, when we receive the usage call for the usage resource ID, and effective usage, which already exists. The response will contain additionalInfo field that contains info about the accepted message.",
+            "schema": {
+              "$ref": "#/definitions/ErrorProperties"
+            }
         }
         }
       }
@@ -111,11 +123,25 @@
             "description": "Bearer token for authorization."
           },
           {
+            "name": "x-ms-requestid",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
+            "name": "x-ms-correlationid",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
             "name": "parameters",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/BatchUsageEvent"
+              "$ref": "#/definitions/BatchUsageEventRequest"
             },
             "description": "Parameters supplied to report batch usage events."
           }
@@ -127,13 +153,16 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BatchUsageEventResponse"
+            }
           },
-          "400": {
-            "description": "Bad request, missing or invalid data provided or expired"
-          },
-          "403": {
-            "description": "Bad request, missing or invalid data provided or expired"
+          "default": {
+            "description": "Error response describing why the operation failed.",
+            "schema": {
+              "$ref": "#/definitions/BasicErrorProperties"
+            }
           }
         }
       }
@@ -149,15 +178,15 @@
     }
   },
   "definitions": {
-    "UsageEvent": {
+    "UsageEventRequest": {
       "allOf": [
         {
-          "$ref": "#/definitions/UsageEventProperties"
+          "$ref": "#/definitions/UsageEventRequestProperties"
         }
       ],
       "description": "The UsageEvent endpoint allows you to emit usage events for a specific purchased entity"
     },
-    "UsageEventProperties": {
+    "UsageEventRequestProperties": {
       "properties": {
         "resourceId": {
           "type": "string",
@@ -183,24 +212,182 @@
       "description": "UsageEvent definition"
     },
 
-    "BatchUsageEvent": {
+
+
+    "UsageEventResponse": {
       "allOf": [
         {
-          "$ref": "#/definitions/BatchUsageEventProperties"
+          "$ref": "#/definitions/ResultProperties"
+        }
+      ],
+      "description": "The batchUsageEventResponse definition"
+    },
+
+
+    "BatchUsageEventRequest": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BatchUsageEventRequestProperties"
         }
       ],
       "description": "The batchUsageEvent endpoint allows you to emit usage events for a specific purchased entity"
     },
-    "BatchUsageEventProperties": {
+    "BatchUsageEventRequestProperties": {
       "properties": {
         "request": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/UsageEventProperties"
+            "$ref": "#/definitions/UsageEventRequestProperties"
           }
         }
       },
       "description": "BatchUsageEvent definition"
+    },
+    "BatchUsageEventResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BatchUsageEventResponseProperties"
+        }
+      ],
+      "description": "The batchUsageEventResponse definition"
+    },
+    "BatchUsageEventResponseProperties": {
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+                "$ref": "#/definitions/ResultProperties"
+              },
+          "description": "List of result objects"
+        },
+        "count": {
+          "type": "integer",
+          "description": "Count of result objects"
+        }
+      },
+      "description": "BatchUsageEventResponseProperties definition"
+    },
+    "ResultProperties": {
+      "properties": {
+        "usageEventId": {
+          "type": "string",
+          "description": "Unique ID for the reported usage event."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the result."
+        },
+        "messageTime": {
+          "type": "string",
+          "description": "Time when the message was sent."
+        },
+        "resourceId": {
+          "type": "string",
+          "description": "Resource ID against which the metric was reported."
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Quantity of the metric that was reported."
+        },
+        "dimension": {
+          "type": "string",
+          "description": "The metric id itself."
+        },
+        "effectiveStartTime": {
+          "type": "string",
+          "description": "The start time of the metric that was reported."
+        },
+        "planId": {
+          "type": "string",
+          "description": "Plan id of the subscriber."
+        },
+        "error": {
+          "type": "object",
+          "$ref": "#/definitions/ErrorProperties",
+          "description": "Tenant that purchased the SaaS subscription."
+        }
+      },
+      "description": "ResultProperties definition"
+    },
+    "ErrorProperties": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Error Message."
+        },
+        "target": {
+          "type": "string",
+          "description": "API request target."
+        },
+        "details": {
+          "type": "array",
+          "items": {
+                "$ref": "#/definitions/DetailsProperties"
+              },
+          "description": "More details about the error."
+        },
+        "code": {
+          "type": "string",
+          "description": "Error code enum."
+        },
+        "additionalInfo": {
+          "type": "object",
+          "$ref": "#/definitions/AdditionalInfoProperties",
+          "description": "Additional information about the error."
+        }
+      },
+      "description": "ErrorProperties definition"
+    },
+    "AdditionalInfoProperties": {
+      "properties": {
+        "acceptedMessage": {
+          "type": "object",
+          "$ref": "#/definitions/ResultProperties",
+          "description": "Details about the accepted message."
+        }
+      },
+      "description": "AdditionalInfoProperties definition"
+    },
+    "DetailsProperties": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Error Message."
+        },
+        "target": {
+          "type": "string",
+          "description": "API request target."
+        },
+        "code": {
+          "type": "string",
+          "description": "Error code enum."
+        }
+      },
+      "description": "DetailsProperties definition"
+    },
+    "BasicErrorProperties": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Error Message."
+        },
+        "target": {
+          "type": "string",
+          "description": "API request target."
+        },
+        "details": {
+          "type": "array",
+          "items": {
+                "$ref": "#/definitions/DetailsProperties"
+              },
+          "description": "More details about the error."
+        },
+        "code": {
+          "type": "string",
+          "description": "Error code enum."
+        }
+      },
+      "description": "BasicErrorProperties definition"
     }
   }
 }
