@@ -123,6 +123,20 @@
             "description": "Bearer token for authorization."
           },
           {
+            "name": "x-ms-requestid",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
+            "name": "x-ms-correlationid",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+          },
+          {
             "name": "parameters",
             "in": "body",
             "required": true,
@@ -144,15 +158,8 @@
               "$ref": "#/definitions/BatchUsageEventResponse"
             }
           },
-          "400": {
-            "description": "Bad request, missing or invalid data provided or expired.",
-            "schema": {
-              "$ref": "#/definitions/BasicErrorProperties"
-            }
-
-          },
-          "403": {
-            "description": "User is unauthorized to make this call.",
+          "default": {
+            "description": "Error response describing why the operation failed.",
             "schema": {
               "$ref": "#/definitions/BasicErrorProperties"
             }
@@ -345,15 +352,15 @@
       "properties": {
         "message": {
           "type": "string",
-          "description": "Status of the result."
+          "description": "Error Message."
         },
         "target": {
           "type": "string",
-          "description": "Time when the message was sent."
+          "description": "API request target."
         },
         "code": {
-          "type": "number",
-          "description": "Quantity of the metric that was reported."
+          "type": "string",
+          "description": "Error code enum."
         }
       },
       "description": "DetailsProperties definition"
