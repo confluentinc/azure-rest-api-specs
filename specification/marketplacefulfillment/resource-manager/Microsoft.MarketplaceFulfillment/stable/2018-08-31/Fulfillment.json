@@ -417,6 +417,17 @@
           "type": "object",
           "$ref": "#/definitions/Tenant",
           "description": "Tenant that purchased the SaaS subscription."
+        },
+        "saasSubscriptionStatus": {
+          "type": "string",
+          "enum": [
+            "NotStarted",
+            "PendingFulfillmentStart",
+            "Subscribed",
+            "Suspended",
+            "Unsubscribed"
+          ],
+          "description": "Indicates the status of the operation."
         }
       },
       "description": "Subscription definition"
