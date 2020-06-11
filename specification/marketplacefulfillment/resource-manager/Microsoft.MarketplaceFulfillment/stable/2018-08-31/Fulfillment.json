@@ -481,8 +481,8 @@
           "description": "Plan Id."
         },
         "quantity": {
-          "type": "string",
-          "format": "integer",
+          "type": "integer",
+          "format": "int32",
           "description": "Quantity."
         },
         "action": {
