@@ -1,0 +1,58 @@
+{
+    "parameters": {
+      "api-version": "2018-08-31"
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "body": {
+          "usageEventId": "Unique identifier associated with the usage event",
+          "status": "Accepted",
+          "messageTime": "Time this message was created in UTC",
+          "resourceId": "Identifier of the resource against which usage is emitted",
+          "quantity": 5.0,
+          "dimension": "Dimension identifier",
+          "effectiveStartTime": "Time in UTC when the usage event occurred",
+          "planId": "Plan associated with the purchased offer"
+        }
+      },
+      "400": {
+        "description": "Bad request, missing or invalid data provided or expired",
+        "body": {
+            "message": "One or more errors have occurred.",
+            "target": "usageEventRequest",
+            "details": [
+              {
+                "message": "The resourceId is required.",
+                "target": "ResourceId",
+                "code": "BadArgument"
+              }
+            ],
+            "code": "BadArgument"
+          }
+      },
+      "403": {
+        "description": "Bad request, missing or invalid data provided or expired",
+        "body": {
+            "code": "Forbidden",
+            "message": "User is not allowed authorized to call this"
+          }
+      },
+      "409": {
+        "description": "Conflict, when we receive the usage call for the usage resource ID, and effective usage, which already exists. The response will contain additionalInfo field that contains info about the accepted message.",
+        "body": {
+            "code": "Conflict",
+            "additionalInfo": {
+              "usageEventId": "Unique identifier associated with the usage event",
+              "status": "Accepted|NotProcessed|Expired",
+              "messageTime": "Time this message was created in UTC",
+              "resourceId": "Identifier of the resource against which usage is emitted",
+              "quantity": 5.0,
+              "dimension": "Dimension identifier",
+              "effectiveStartTime": "Time in UTC when the usage event occurred",
+              "planId": "Plan associated with the purchased offer"
+            }
+          }
+    }
+    }
+  }
