@@ -403,6 +403,11 @@
           "type": "string",
           "description": "Plan Id."
         },
+        "term":{
+          "type":"object",
+          "$ref":"#/definitions/Term",
+          "description": "Term for contract."
+        },
         "quantity": {
           "type": "string",
           "format": "integer",
@@ -518,6 +523,24 @@
         }
       },
       "description": "Operation definition"
+    },
+    "Term":{
+     "type": "object",
+      "description": "The properties of a tenant.",
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "description": "The start date of the subscription."
+        },
+        "endDate": {
+          "type": "string",
+          "description": "The end date of the subscription."
+        },
+        "termUnit": {
+          "type": "string",
+          "description": "The term unit for the subscription."
+        }
+      }
     },
     "ErrorResponse": {
       "description": "Error response indicates Microsoft.MarketplaceFulfillment service is not able to process the incoming request. The reason is provided in the error message.",
