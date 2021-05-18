@@ -148,7 +148,7 @@
             },
             "delete": {
                 "description": "Unsubscribe and delete the specified subscription.",
-                "operationId": "FulfillmentOperations_DeleteSubscription",
+                "operationId": "MarketplaceFulfillment_DeleteSubscription",
                 "parameters": [{
                         "$ref": "#/parameters/ApiVersionParameter"
                     },
