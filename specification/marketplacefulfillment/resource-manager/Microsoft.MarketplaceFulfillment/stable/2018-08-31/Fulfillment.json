@@ -1,567 +1,603 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "MarketplaceFulfillment",
-    "description": "REST API for MarketplaceFulfillment.",
-    "version": "2018-08-31"
-  },
-  "host": "marketplaceapi.microsoft.com",
-  "basePath": "/api/saas/subscriptions",
-  "schemes": [
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "security": [
-    {
-      "azure_auth": [
-        "user_impersonation"
-      ]
-    }
-  ],
-  "securityDefinitions": {
-    "azure_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
-      "flow": "implicit",
-      "description": "Azure Active Directory OAuth2 Flow.",
-      "scopes": {
-        "user_impersonation": "impersonate your user account"
-      }
-    }
-  },
-  "paths": {
-    "/resolve": {
-      "post": {
-        "operationId": "MarketplaceFulfillment_Resolve",
-        "description": "Resolve marketplace subscription.",
-        "x-ms-examples": {
-          "ResolveSubscription": {
-            "$ref": "./examples/ResolveSubscription.json"
-          }
-        },
-        "parameters": [
-          {
-            "name": "x-ms-requestid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
-          },
-          {
-            "name": "x-ms-correlationid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
-          },
-          {
-            "name": "x-ms-marketplace-token",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "The token query parameter in the URL when the user is redirected to the SaaS partner’s website from Azure (for example: https://contoso.com/signup?token=..). Note: The URL decodes the token value from the browser before using it."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "JWT bearer token"
-          },
-          {
-            "$ref": "#/parameters/ApiVersionParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK. The request was successfully processed and the terms were accepted.",
-            "schema": {
-              "$ref": "#/definitions/Subscription"
-            }
-          },
-          "default": {
-            "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
+    "swagger": "2.0",
+    "info": {
+        "title": "MarketplaceFulfillment",
+        "description": "REST API for MarketplaceFulfillment.",
+        "version": "2018-08-31"
     },
-    "/{subscriptionId}": {
-      "get": {
-        "operationId": "MarketplaceFulfillment_GetSubscription",
-        "description": "Gets the specified SaaS subscription. Use this call to get license information and plan information.",
-        "x-ms-examples": {
-          "ResolveSubscription": {
-            "$ref": "./examples/GetSubscription.json"
-          }
-        },
-        "parameters": [
-          {
-            "$ref": "#/parameters/ApiVersionParameter"
-          },
-          {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The subscription id to use for the request."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "JWT bearer token"
-          },
-          {
-            "name": "x-ms-requestid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
-          },
-          {
-            "name": "x-ms-correlationid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK. Gets the SaaS subscription from identifier.",
-            "schema": {
-              "$ref": "#/definitions/Subscription"
+    "host": "marketplaceapi.microsoft.com",
+    "basePath": "/api/saas/subscriptions",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "security": [{
+        "azure_auth": [
+            "user_impersonation"
+        ]
+    }],
+    "securityDefinitions": {
+        "azure_auth": {
+            "type": "oauth2",
+            "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
+            "flow": "implicit",
+            "description": "Azure Active Directory OAuth2 Flow.",
+            "scopes": {
+                "user_impersonation": "impersonate your user account"
             }
-          },
-          "default": {
-            "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
         }
-      }
     },
-    "/{subscriptionId}/activate": {
-      "post": {
-        "operationId": "MarketplaceFulfillment_ActivateSubscription",
-        "description": "Activate a specific subscription.",
-        "x-ms-examples": {
-          "ActivateSubscription": {
-            "$ref": "./examples/ActivateSubscription.json"
-          }
-        },
-        "parameters": [
-          {
-            "$ref": "#/parameters/ApiVersionParameter"
-          },
-          {
-            "name": "activatePayload",
-            "in": "body",
-            "description": "The planID and quantity to activate.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Subscription"
+    "paths": {
+        "/resolve": {
+            "post": {
+                "operationId": "MarketplaceFulfillment_Resolve",
+                "description": "Resolve marketplace subscription.",
+                "x-ms-examples": {
+                    "ResolveSubscription": {
+                        "$ref": "./examples/ResolveSubscription.json"
+                    }
+                },
+                "parameters": [{
+                        "name": "x-ms-requestid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-correlationid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-marketplace-token",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "The token query parameter in the URL when the user is redirected to the SaaS partner’s website from Azure (for example: https://contoso.com/signup?token=..). Note: The URL decodes the token value from the browser before using it."
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "JWT bearer token"
+                    },
+                    {
+                        "$ref": "#/parameters/ApiVersionParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. The request was successfully processed and the terms were accepted.",
+                        "schema": {
+                            "$ref": "#/definitions/Subscription"
+                        }
+                    },
+                    "default": {
+                        "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
             }
-          },
-          {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The subscription id to use for the request."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "JWT bearer token"
-          },
-          {
-            "name": "x-ms-requestid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
-          },
-          {
-            "name": "x-ms-correlationid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK. Activates the subscription.",
-            "schema": {
-              "$ref": "#/definitions/Subscription"
-            }
-          },
-          "default": {
-            "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/{subscriptionId}/operations/{operationId}": {
-      "get": {
-        "operationId": "MarketplaceFulfillment_GetOperation",
-        "description": "Enables the publisher to track the status of the specified triggered async operation (such as subscribe, unsubscribe, changePlan, or changeQuantity).",
-        "x-ms-examples": {
-          "GetOperation": {
-            "$ref": "./examples/GetOperation.json"
-          }
         },
-        "parameters": [
-          {
-            "$ref": "#/parameters/ApiVersionParameter"
-          },
-          {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The subscription id to use for the request."
-          },
-          {
-            "name": "operationId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The operation id to use for the request."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "JWT bearer token"
-          },
-          {
-            "name": "x-ms-requestid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
-          },
-          {
-            "name": "x-ms-correlationid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK. Gets the specified pending SaaS operation.",
-            "schema": {
-              "$ref": "#/definitions/Operation"
-            }
-          },
-          "default": {
-            "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "MarketplaceFulfillment_PatchOperation",
-        "description": "Update the status of an operation to indicate success or failure with the provided values.",
-        "x-ms-examples": {
-          "GetOperation": {
-            "$ref": "./examples/PatchOperation.json"
-          }
-        },
-        "parameters": [
-          {
-            "$ref": "#/parameters/ApiVersionParameter"
-          },
-          {
-            "name": "patchPayload",
-            "in": "body",
-            "description": "The planID, quantity, and status to update.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Operation"
-            }
-          },
-          {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The subscription id to use for the request."
-          },
-          {
-            "name": "operationId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The operation id to use for the request."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "JWT bearer token"
-          },
-          {
-            "name": "x-ms-requestid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
-          },
-          {
-            "name": "x-ms-correlationid",
-            "in": "header",
-            "required": false,
-            "type": "string",
-            "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK. A call to inform of completion of an operation on the partner side.",
-            "schema": {
-              "$ref": "#/definitions/Operation"
-            }
-          },
-          "default": {
-            "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    }
-  },
-  "parameters": {
-    "ApiVersionParameter": {
-      "name": "api-version",
-      "in": "query",
-      "required": true,
-      "type": "string",
-      "description": "The API version to use for the request."
-    }
-  },
-  "definitions": {
-    "Subscription": {
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/SubscriptionProperties",
-          "description": "Represents the properties of the resource.",
-          "x-ms-client-flatten": true
-        }
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/SubscriptionProperties"
-        }
-      ],
-      "description": "Subscription Publisher/Offer/Plan tuple with quantity"
-    },
-    "SubscriptionProperties": {
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "GUID."
-        },
-        "name": {
-          "type": "string",
-          "description": "Subscription name."
-        },
-        "publisherId": {
-          "type": "string",
-          "description": "Publisher Id."
-        },
-        "offerId": {
-          "type": "string",
-          "description": "Offer Id."
-        },
-        "planId": {
-          "type": "string",
-          "description": "Plan Id."
-        },
-        "term":{
-          "type":"object",
-          "$ref":"#/definitions/Term",
-          "description": "Term for contract."
-        },
-        "quantity": {
-          "type": "string",
-          "format": "integer",
-          "description": "Quantity."
-        },
-        "beneficiary": {
-          "type": "object",
-          "$ref": "#/definitions/Tenant",
-          "description": "Tenant for which SaaS subscription is purchased."
-        },
-        "purchaser": {
-          "type": "object",
-          "$ref": "#/definitions/Tenant",
-          "description": "Tenant that purchased the SaaS subscription."
-        },
-        "saasSubscriptionStatus": {
-          "type": "string",
-          "enum": [
-            "NotStarted",
-            "PendingFulfillmentStart",
-            "Subscribed",
-            "Suspended",
-            "Unsubscribed"
-          ],
-          "description": "Indicates the status of the operation."
-        }
-      },
-      "description": "Subscription definition"
-    },
-    "Tenant": {
-      "type": "object",
-      "description": "The properties of a tenant.",
-      "properties": {
-        "emailId": {
-          "type": "string",
-          "description": "The email of the tenant."
-        },
-        "objectId": {
-          "type": "string",
-          "description": "The object id of the tenant."
-        },
-        "tenantId": {
-          "type": "string",
-          "description": "The tenant id of the tenant."
-        },
-        "puid": {
-          "type": "string",
-          "description": "The puid of the tenant."
-        }
-      }
-    },
-    "Operation": {
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/OperationProperties",
-          "description": "Represents the properties of the resource.",
-          "x-ms-client-flatten": true
-        }
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/OperationProperties"
-        }
-      ],
-      "description": "Operation tuple"
-    },
-    "OperationProperties": {
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "GUID."
-        },
-        "activityId": {
-          "type": "string",
-          "description": "GUID for activity id."
-        },
-        "subscriptionId": {
-          "type": "string",
-          "description": "GUID for subscription id."
-        },
-        "publisherId": {
-          "type": "string",
-          "description": "Publisher Id."
-        },
-        "planId": {
-          "type": "string",
-          "description": "Plan Id."
-        },
-        "quantity": {
-          "type": "integer",
-          "format": "int32",
-          "description": "Quantity."
-        },
-        "action": {
-          "type": "string",
-          "description": "Action of operation."
-        },
-        "timestamp": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of operation."
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "NotStarted",
-            "InProgress",
-            "Succeeded",
-            "Failed",
-            "Conflict"
-          ],
-          "description": "Status of operation."
-        }
-      },
-      "description": "Operation definition"
-    },
-    "Term":{
-     "type": "object",
-      "description": "The properties of a tenant.",
-      "properties": {
-        "startDate": {
-          "type": "string",
-          "description": "The start date of the subscription."
-        },
-        "endDate": {
-          "type": "string",
-          "description": "The end date of the subscription."
-        },
-        "termUnit": {
-          "type": "string",
-          "description": "The term unit for the subscription."
-        }
-      }
-    },
-    "ErrorResponse": {
-      "description": "Error response indicates Microsoft.MarketplaceFulfillment service is not able to process the incoming request. The reason is provided in the error message.",
-      "type": "object",
-      "properties": {
-        "error": {
-          "description": "The details of the error.",
-          "properties": {
-            "code": {
-              "description": "Error code.",
-              "type": "string",
-              "readOnly": true
+        "/{subscriptionId}": {
+            "get": {
+                "operationId": "MarketplaceFulfillment_GetSubscription",
+                "description": "Gets the specified SaaS subscription. Use this call to get license information and plan information.",
+                "x-ms-examples": {
+                    "ResolveSubscription": {
+                        "$ref": "./examples/GetSubscription.json"
+                    }
+                },
+                "parameters": [{
+                        "$ref": "#/parameters/ApiVersionParameter"
+                    },
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The subscription id to use for the request."
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "JWT bearer token"
+                    },
+                    {
+                        "name": "x-ms-requestid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-correlationid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Gets the SaaS subscription from identifier.",
+                        "schema": {
+                            "$ref": "#/definitions/Subscription"
+                        }
+                    },
+                    "default": {
+                        "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
             },
-            "message": {
-              "description": "Error message indicating why the operation failed.",
-              "type": "string",
-              "readOnly": true
+            "delete": {
+                "description": "Unsubscribe and delete the specified subscription.",
+                "operationId": "FulfillmentOperations_DeleteSubscription",
+                "parameters": [{
+                        "$ref": "#/parameters/ApiVersionParameter"
+                    },
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The subscription id to use for the request."
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "JWT bearer token"
+                    },
+                    {
+                        "name": "x-ms-requestid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-correlationid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "The partner initiated a call to unsubscribe a SaaS subscription."
+                    },
+                    "default": {
+                        "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
             }
-          }
+        },
+        "/{subscriptionId}/activate": {
+            "post": {
+                "operationId": "MarketplaceFulfillment_ActivateSubscription",
+                "description": "Activate a specific subscription.",
+                "x-ms-examples": {
+                    "ActivateSubscription": {
+                        "$ref": "./examples/ActivateSubscription.json"
+                    }
+                },
+                "parameters": [{
+                        "$ref": "#/parameters/ApiVersionParameter"
+                    },
+                    {
+                        "name": "activatePayload",
+                        "in": "body",
+                        "description": "The planID and quantity to activate.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Subscription"
+                        }
+                    },
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The subscription id to use for the request."
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "JWT bearer token"
+                    },
+                    {
+                        "name": "x-ms-requestid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-correlationid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Activates the subscription.",
+                        "schema": {
+                            "$ref": "#/definitions/Subscription"
+                        }
+                    },
+                    "default": {
+                        "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{subscriptionId}/operations/{operationId}": {
+            "get": {
+                "operationId": "MarketplaceFulfillment_GetOperation",
+                "description": "Enables the publisher to track the status of the specified triggered async operation (such as subscribe, unsubscribe, changePlan, or changeQuantity).",
+                "x-ms-examples": {
+                    "GetOperation": {
+                        "$ref": "./examples/GetOperation.json"
+                    }
+                },
+                "parameters": [{
+                        "$ref": "#/parameters/ApiVersionParameter"
+                    },
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The subscription id to use for the request."
+                    },
+                    {
+                        "name": "operationId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The operation id to use for the request."
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "JWT bearer token"
+                    },
+                    {
+                        "name": "x-ms-requestid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-correlationid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Gets the specified pending SaaS operation.",
+                        "schema": {
+                            "$ref": "#/definitions/Operation"
+                        }
+                    },
+                    "default": {
+                        "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "MarketplaceFulfillment_PatchOperation",
+                "description": "Update the status of an operation to indicate success or failure with the provided values.",
+                "x-ms-examples": {
+                    "GetOperation": {
+                        "$ref": "./examples/PatchOperation.json"
+                    }
+                },
+                "parameters": [{
+                        "$ref": "#/parameters/ApiVersionParameter"
+                    },
+                    {
+                        "name": "patchPayload",
+                        "in": "body",
+                        "description": "The planID, quantity, and status to update.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Operation"
+                        }
+                    },
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The subscription id to use for the request."
+                    },
+                    {
+                        "name": "operationId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The operation id to use for the request."
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "JWT bearer token"
+                    },
+                    {
+                        "name": "x-ms-requestid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for tracking the request from the client, preferably a GUID. If this value isn't provided, one will be generated and provided in the response headers."
+                    },
+                    {
+                        "name": "x-ms-correlationid",
+                        "in": "header",
+                        "required": false,
+                        "type": "string",
+                        "description": "A unique string value for operation on the client. This parameter correlates all events from client operation with events on the server side. If this value isn't provided, one will be generated and provided in the response headers."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. A call to inform of completion of an operation on the partner side.",
+                        "schema": {
+                            "$ref": "#/definitions/Operation"
+                        }
+                    },
+                    "default": {
+                        "description": "Microsoft.MarketplaceFulfillment error response describing why the operation failed.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
-      }
+    },
+    "parameters": {
+        "ApiVersionParameter": {
+            "name": "api-version",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The API version to use for the request."
+        }
+    },
+    "definitions": {
+        "Subscription": {
+            "properties": {
+                "properties": {
+                    "$ref": "#/definitions/SubscriptionProperties",
+                    "description": "Represents the properties of the resource.",
+                    "x-ms-client-flatten": true
+                }
+            },
+            "allOf": [{
+                "$ref": "#/definitions/SubscriptionProperties"
+            }],
+            "description": "Subscription Publisher/Offer/Plan tuple with quantity"
+        },
+        "SubscriptionProperties": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "GUID."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Subscription name."
+                },
+                "publisherId": {
+                    "type": "string",
+                    "description": "Publisher Id."
+                },
+                "offerId": {
+                    "type": "string",
+                    "description": "Offer Id."
+                },
+                "planId": {
+                    "type": "string",
+                    "description": "Plan Id."
+                },
+                "term": {
+                    "type": "object",
+                    "$ref": "#/definitions/Term",
+                    "description": "Term for contract."
+                },
+                "quantity": {
+                    "type": "string",
+                    "format": "integer",
+                    "description": "Quantity."
+                },
+                "beneficiary": {
+                    "type": "object",
+                    "$ref": "#/definitions/Tenant",
+                    "description": "Tenant for which SaaS subscription is purchased."
+                },
+                "purchaser": {
+                    "type": "object",
+                    "$ref": "#/definitions/Tenant",
+                    "description": "Tenant that purchased the SaaS subscription."
+                },
+                "saasSubscriptionStatus": {
+                    "type": "string",
+                    "enum": [
+                        "NotStarted",
+                        "PendingFulfillmentStart",
+                        "Subscribed",
+                        "Suspended",
+                        "Unsubscribed"
+                    ],
+                    "description": "Indicates the status of the operation."
+                }
+            },
+            "description": "Subscription definition"
+        },
+        "Tenant": {
+            "type": "object",
+            "description": "The properties of a tenant.",
+            "properties": {
+                "emailId": {
+                    "type": "string",
+                    "description": "The email of the tenant."
+                },
+                "objectId": {
+                    "type": "string",
+                    "description": "The object id of the tenant."
+                },
+                "tenantId": {
+                    "type": "string",
+                    "description": "The tenant id of the tenant."
+                },
+                "puid": {
+                    "type": "string",
+                    "description": "The puid of the tenant."
+                }
+            }
+        },
+        "Operation": {
+            "properties": {
+                "properties": {
+                    "$ref": "#/definitions/OperationProperties",
+                    "description": "Represents the properties of the resource.",
+                    "x-ms-client-flatten": true
+                }
+            },
+            "allOf": [{
+                "$ref": "#/definitions/OperationProperties"
+            }],
+            "description": "Operation tuple"
+        },
+        "OperationProperties": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "GUID."
+                },
+                "activityId": {
+                    "type": "string",
+                    "description": "GUID for activity id."
+                },
+                "subscriptionId": {
+                    "type": "string",
+                    "description": "GUID for subscription id."
+                },
+                "publisherId": {
+                    "type": "string",
+                    "description": "Publisher Id."
+                },
+                "planId": {
+                    "type": "string",
+                    "description": "Plan Id."
+                },
+                "quantity": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Quantity."
+                },
+                "action": {
+                    "type": "string",
+                    "description": "Action of operation."
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Timestamp of operation."
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "NotStarted",
+                        "InProgress",
+                        "Succeeded",
+                        "Failed",
+                        "Conflict"
+                    ],
+                    "description": "Status of operation."
+                }
+            },
+            "description": "Operation definition"
+        },
+        "Term": {
+            "type": "object",
+            "description": "The properties of a tenant.",
+            "properties": {
+                "startDate": {
+                    "type": "string",
+                    "description": "The start date of the subscription."
+                },
+                "endDate": {
+                    "type": "string",
+                    "description": "The end date of the subscription."
+                },
+                "termUnit": {
+                    "type": "string",
+                    "description": "The term unit for the subscription."
+                }
+            }
+        },
+        "ErrorResponse": {
+            "description": "Error response indicates Microsoft.MarketplaceFulfillment service is not able to process the incoming request. The reason is provided in the error message.",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "The details of the error.",
+                    "properties": {
+                        "code": {
+                            "description": "Error code.",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "message": {
+                            "description": "Error message indicating why the operation failed.",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
 }
